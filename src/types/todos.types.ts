@@ -9,6 +9,6 @@ export type TodoStore = {
   todos: Todos[];
   addTodo: (title: string, description: string) => void;
   updateTodo: (id: number, title: string, description: string) => void;
-  updateStatusTodo: (id: number, status: boolean) => void;
+  updateStatusTodo: (id: number) => void;
   deleteTodo: (id: number) => void;
 };
