@@ -6,9 +6,9 @@ export type Todos = {
 };
 
 export type TodoState = {
-  title: string
-  description: string
-}
+  title: string;
+  description: string;
+};
 
 export type TodoStore = {
   todos: Todos[];
