@@ -10,6 +10,10 @@ export type TodoState = {
   description: string;
 };
 
+export type TodoProps = {
+  todos: Todos[]
+}
+
 export type TodoStore = {
   todos: Todos[];
   addTodo: (title: string, description: string) => void;
