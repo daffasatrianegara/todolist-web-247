@@ -5,6 +5,11 @@ export type Todos = {
   status: boolean;
 };
 
+export type TodoState = {
+  title: string
+  description: string
+}
+
 export type TodoStore = {
   todos: Todos[];
   addTodo: (title: string, description: string) => void;

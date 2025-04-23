@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { TodoStore } from '../types/todos.types';
 
-const setTodoStore = create<TodoStore>((set) => ({
+const useTodoStore = create<TodoStore>((set) => ({
   todos: [],
   addTodo(title, description) {
     set((state) => ({
@@ -25,4 +25,4 @@ const setTodoStore = create<TodoStore>((set) => ({
   },
 }));
 
-export default setTodoStore;
+export default useTodoStore;
