@@ -11,8 +11,8 @@ export type TodoState = {
 };
 
 export type TodoProps = {
-  todos: Todos[]
-}
+  todos: Todos[];
+};
 
 export type TodoStore = {
   todos: Todos[];
