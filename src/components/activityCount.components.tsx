@@ -29,7 +29,7 @@ const ActivityTodoComponent: React.FC<TodoProps> = ({ todos }) => {
           <p className="text-center text-xl font-bold sm:text-2xl">Kegiatan</p>
         </div>
         <div className="w-1/2 rounded bg-red-400 px-3 py-5">
-          <p className="text-base font-semibold sm:text-lg">Kegiatan yang belum selesai:</p>
+          <p className="text-base font-semibold sm:text-lg">Kegiatan yang belum selesai</p>
           <p className="my-1 text-center text-2xl font-bold sm:my-3 sm:text-5xl">
             {unfinishedTodo}
           </p>
