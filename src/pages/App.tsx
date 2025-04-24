@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useTodoStore from '../stores/todoStore';
 import { TodoState } from '../types/todos.types';
 import ActivityTodoComponent from '../components/activityCount.components';
+import NullComponent from '../components/404.components';
 
 function App() {
   const { todos, addTodo, updateTodo, updateStatusTodo, deleteTodo } = useTodoStore();
@@ -19,6 +20,7 @@ function App() {
       addTodo(todo.title, todo.description);
     }
 
+    setEditId(null);
     setTodo({
       title: '',
       description: '',
@@ -37,12 +39,12 @@ function App() {
     <div className="min-h-screen w-full bg-[#D7DDE2]">
       <div className="p-7 sm:p-10 md:p-12">
         <p className="text-xl font-bold text-[#252525] sm:text-2xl md:text-3xl">
-          TodoListify — Bikin semua tugas tertata.
+          TodoListify — Bikin semua kegiatan tertata.
         </p>
         <p className="text-sm font-semibold text-[#938eae] sm:text-lg md:text-xl">
           List sekarang, selesai nanti.
         </p>
-        <div className="my-5 flex w-full flex-col-reverse gap-3 sm:flex-row">
+        <div className="mt-5 mb-3 flex w-full flex-col-reverse gap-3 sm:flex-row">
           <div className="w-full rounded-lg bg-[#F6F6F6] p-5 text-[#252525] sm:w-1/2">
             <p className="text-lg font-bold sm:text-xl md:text-2xl">
               {editId === null ? 'Tambah' : 'Perbarui'} Kegiatan
@@ -89,6 +91,156 @@ function App() {
           <div className="w-full rounded-lg bg-[#252525] p-5 sm:w-1/2">
             <ActivityTodoComponent todos={todos} />
           </div>
+        </div>
+        <div className="w-full rounded-lg bg-[#ACA7C9] p-5">
+          <p className="text-lg font-bold text-purple-50 sm:text-xl md:text-2xl">Daftar Kegiatan</p>
+          <div className="mt-5 mb-3 flex flex-wrap gap-2 sm:gap-3">
+            <button
+              className={`rounded px-2 py-1 text-xs font-semibold text-white sm:px-5 sm:text-sm ${page == 1 ? 'cursor-default bg-gray-700' : 'cursor-pointer bg-gray-900 hover:bg-gray-700'}`}
+              onClick={() => setPage(1)}
+            >
+              Semua Kegiatan
+            </button>
+            <button
+              className={`rounded px-2 py-1 text-xs font-semibold text-white sm:px-5 sm:text-sm ${page == 2 ? 'cursor-default bg-gray-700' : 'cursor-pointer bg-gray-900 hover:bg-gray-700'}`}
+              onClick={() => setPage(2)}
+            >
+              Kegiatan Selesai
+            </button>
+            <button
+              className={`rounded px-2 py-1 text-xs font-semibold text-white sm:px-5 sm:text-sm ${page == 3 ? 'cursor-default bg-gray-700' : 'cursor-pointer bg-gray-900 hover:bg-gray-700'}`}
+              onClick={() => setPage(3)}
+            >
+              Kegiatan Belum Selesai
+            </button>
+          </div>
+          {todos.length === 0 ? (
+            <div className="my-10">
+              <NullComponent />
+            </div>
+          ) : page === 1 ? (
+            <div className="mt-5 flex w-full flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
+              {todos.map((todo) => (
+                <div
+                  className={`h-fit w-full rounded p-5 sm:w-[48%] ${todo.status === true ? 'bg-green-500' : 'bg-red-500'}`}
+                  key={todo.id}
+                >
+                  <p className="text-lg font-bold text-white sm:text-xl">{todo.title}</p>
+                  <div className="my-2 w-full rounded bg-white p-2">
+                    <p className="text-xs sm:text-sm">{todo.description}</p>
+                  </div>
+                  <div className="mt-3 flex w-full justify-end gap-3">
+                    <button
+                      className="cursor-pointer rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-400 sm:text-sm"
+                      onClick={() => deleteTodo(todo.id)}
+                    >
+                      Hapus
+                    </button>
+                    {todo.status !== true ? (
+                      <>
+                        <button
+                          className="cursor-pointer rounded bg-yellow-500 px-2 py-1 text-xs font-semibold text-gray-950 hover:bg-yellow-400 sm:text-sm"
+                          onClick={() => handleUpdate(todo.id, todo.title, todo.description)}
+                        >
+                          Perbarui
+                        </button>
+                        <button
+                          className="cursor-pointer rounded bg-green-700 px-2 py-1 text-xs font-semibold text-white hover:bg-green-600 sm:text-sm"
+                          onClick={() => updateStatusTodo(todo.id)}
+                        >
+                          Selesai
+                        </button>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : page === 2 ? (
+            <div>
+              {todos.filter((todo) => todo.status === true).length === 0 ? (
+                <div className="my-10">
+                  <NullComponent />
+                </div>
+              ) : (
+                <div className="mt-5 flex w-full flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
+                  {todos
+                    .filter((todo) => todo.status === true)
+                    .map((todo) => (
+                      <div
+                        className={`h-fit w-full rounded p-5 sm:w-[48%] ${todo.status === true ? 'bg-green-500' : 'bg-red-500'}`}
+                        key={todo.id}
+                      >
+                        <p className="text-lg font-bold text-white sm:text-xl">{todo.title}</p>
+                        <div className="my-2 w-full rounded bg-white p-2">
+                          <p className="text-xs sm:text-sm">{todo.description}</p>
+                        </div>
+                        <div className="mt-3 flex w-full justify-end gap-3">
+                          <button
+                            className="cursor-pointer rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-400 sm:text-sm"
+                            onClick={() => deleteTodo(todo.id)}
+                          >
+                            Hapus
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          ) : page === 3 ? (
+            <div>
+              {todos.filter((todo) => todo.status === false).length === 0 ? (
+                <div className="my-10">
+                  <NullComponent />
+                </div>
+              ) : (
+                <div className="mt-5 flex w-full flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
+                  {todos
+                    .filter((todo) => todo.status === false)
+                    .map((todo) => (
+                      <div
+                        className={`h-fit w-full rounded p-5 sm:w-[48%] ${todo.status === true ? 'bg-green-500' : 'bg-red-500'}`}
+                        key={todo.id}
+                      >
+                        <p className="text-lg font-bold text-white sm:text-xl">{todo.title}</p>
+                        <div className="my-2 w-full rounded bg-white p-2">
+                          <p className="text-xs sm:text-sm">{todo.description}</p>
+                        </div>
+                        <div className="mt-3 flex w-full justify-end gap-3">
+                          <button
+                            className="cursor-pointer rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-400 sm:text-sm"
+                            onClick={() => deleteTodo(todo.id)}
+                          >
+                            Hapus
+                          </button>
+                          {todo.status !== true ? (
+                            <>
+                              <button
+                                className="cursor-pointer rounded bg-yellow-500 px-2 py-1 text-xs font-semibold text-gray-950 hover:bg-yellow-400 sm:text-sm"
+                                onClick={() => handleUpdate(todo.id, todo.title, todo.description)}
+                              >
+                                Perbarui
+                              </button>
+                              <button
+                                className="cursor-pointer rounded bg-green-700 px-2 py-1 text-xs font-semibold text-white hover:bg-green-600 sm:text-sm"
+                                onClick={() => updateStatusTodo(todo.id)}
+                              >
+                                Selesai
+                              </button>
+                            </>
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
